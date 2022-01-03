@@ -6,10 +6,11 @@ import CartItem from "../cart-item/cart-item.components";
 import {selectCartItems} from "../../redux/cart/cart.selector";
 import {createStructuredSelector} from "reselect";
 import { useNavigate } from 'react-router-dom';
+import {toggleCartHidden} from "../../redux/cart/cart.actions";
 
 import './cart-dropdown.style.scss'
 
-const CartDropdown = ({cartItems}) => {
+const CartDropdown = ({cartItems, dispatch}) => {
   let navigate = useNavigate();
 
   return (
@@ -24,7 +25,10 @@ const CartDropdown = ({cartItems}) => {
           :
           <span className={'empty-message'}>Your cart is empty</span>
       }
-      <CustomButton onClick={() => navigate('/checkout')}> GO TO CHECKOUT </CustomButton>
+      <CustomButton onClick={() => {
+        navigate('/checkout');
+        dispatch(toggleCartHidden());
+      }}> GO TO CHECKOUT </CustomButton>
     </div>
   )
 }
@@ -32,5 +36,6 @@ const CartDropdown = ({cartItems}) => {
 const mapStateToProps = state => createStructuredSelector({
   cartItems: selectCartItems
 });
+
 
 export default connect(mapStateToProps)(CartDropdown);
